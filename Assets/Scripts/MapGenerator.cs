@@ -113,6 +113,16 @@ public class MapGenerator : MonoBehaviour
             if (Random.Range(0, 2) == 1) doors[6].SetActive(false);
             else doors[6].AddComponent<BreakableObject>().breakableSprite = breakableTexture; //тут обязательно делать разрушаемой!
         }
+
+        //--- иногда игрок может заспавниться на уровне в замурованной компате (только с бомбой можно из неё выйти, нужно исключить подобное на первом уровне, т.к. у игрока точно нет бомбы)
+        if (levelNumber == 0)
+        {
+            var breakableObjects = FindObjectsOfType<BreakableObject>();
+            foreach (var obj in breakableObjects)
+            {
+                Destroy(obj.gameObject);
+            }
+        }
         #endregion
 
         currentLevel.transform.Rotate(new Vector3(0, 0, 90 * Random.Range(0, 4) ));
